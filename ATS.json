@@ -1,0 +1,226 @@
+{
+  "name": "ATS",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Job Application Form ",
+        "formDescription": "We'll get back to you soon ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name"
+            },
+            {
+              "fieldLabel": "Gmail",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Linkedin Profile"
+            },
+            {
+              "fieldLabel": "Resume ",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        -16
+      ],
+      "id": "404fd8a6-2711-4c20-8cb9-69e648cdc25c",
+      "name": "On form submission",
+      "webhookId": "b3e84f3d-88e2-4e37-abe8-8c52d02aa1f6"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "Resume_",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "0686d2a9-7bc1-4bbb-9ec5-667a57b474fd",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}{{ $('On form submission').item.json.Gmail }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Rule 1: Do not exceed 75 words.\n\nYou are an AI ATS system. Analyze the candidate's resume against the job description.\n\nReturn ONLY valid JSON in ${output_language}:\n\n{\n  \"compatibility_rating\": \"score/10 with brief reason\",\n  \"ats_score\": \"number/100\",\n  \"recommendation\": \"Interview/Reject with reason\",\n  \"summary\": \"short evaluation\"\n}\n\nJob Description: Software Engineer at Atomise AI\n\nResume:\n{{ $('On form submission').item.json['Resume '] }}"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        416,
+        -16
+      ],
+      "id": "8d61cef3-d3ed-4cf4-9fad-bcd4992606da",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        352,
+        192
+      ],
+      "id": "75e28cb4-18d0-4103-84e4-3af8a6b60216",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "001MmHzavN5TLszs",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"compatibility_rating\": \"string\",\n  \"ats_score\": \"string\",\n  \"recommendation\": \"string\",\n  \"summary\": \"string\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        160
+      ],
+      "id": "5c2bc7f7-7461-43d3-a1d1-93ef6c655f4e",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json.Gmail }}",
+        "subject": "hello",
+        "message": "=<h2>ATS Resume Analysis Report</h2>\n\n<p>Dear {{ $('On form submission').item.json['Full Name'] }},</p>\n\n<p>Thank you for submitting your resume for the <strong>Software Engineer</strong> role at <strong>Atomise AI</strong>.</p>\n\n<hr>\n\n<p><strong>🔹 Compatibility Rating:</strong> {{$json[\"compatibility_rating\"]}}</p>\n\n<p><strong>🔹 ATS Score:</strong> {{$json[\"ats_score\"]}}</p>\n\n<p><strong>🔹 Recommendation:</strong> {{$json[\"recommendation\"]}}</p>\n\n<p><strong>🔹 Summary:</strong><br>\n{{$json[\"summary\"]}}</p>\n\n<hr>\n\n<p>If shortlisted, our team will reach out to you for the next steps.</p>\n\n<p>Best regards,<br>\n<b>Hiring Team</b><br>\nAtomise AI</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        752,
+        192
+      ],
+      "id": "55d90ec4-c121-41c4-8b46-ed1752138c91",
+      "name": "Send a message",
+      "webhookId": "32512510-78d2-4e76-8b41-f2c2e6f4df53",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "VcjjQgvcYzweVotv",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $json.output || $json.text || JSON.stringify($json);\n\n// Clean unwanted characters\nraw = raw.replace(/```json|```/g, '').trim();\n\n// Extract JSON part\nconst start = raw.indexOf('{');\nconst end = raw.lastIndexOf('}') + 1;\n\nconst jsonString = raw.slice(start, end);\n\n// Convert string → JSON\nconst parsed = JSON.parse(jsonString);\n\nreturn [{ json: parsed }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        -16
+      ],
+      "id": "68b4f366-b5ed-4aba-a064-8c75c49b8a39",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        []
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "48a18220-6ee2-4f3d-953b-14affb656bfe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8deb61ef4a41f9756b4aa81dec00f4b23005b1cba126bd4f0e8a1b94bee2c015"
+  },
+  "id": "NE7pvhALrJGF5WDo",
+  "tags": []
+}
