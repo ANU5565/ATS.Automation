@@ -1,0 +1,293 @@
+{
+  "name": "ATS",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Job Application Form ",
+        "formDescription": "We'll get back to you soon ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name"
+            },
+            {
+              "fieldLabel": "Gmail",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Linkedin Profile"
+            },
+            {
+              "fieldLabel": "Resume ",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -160,
+        -16
+      ],
+      "id": "404fd8a6-2711-4c20-8cb9-69e648cdc25c",
+      "name": "On form submission",
+      "webhookId": "b3e84f3d-88e2-4e37-abe8-8c52d02aa1f6"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "Resume_",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        160
+      ],
+      "id": "0686d2a9-7bc1-4bbb-9ec5-667a57b474fd",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}{{ $('On form submission').item.json.Gmail }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Rule 1: Max 75 words.\n\nYou are an ATS system. Analyze the resume for a Software Engineer role.\n\nReturn ONLY valid JSON. No extra text.\n\n{\n  \"compatibility_rating\": \"score/10 with reason\",\n  \"ats_score\": \"number/100\",\n  \"recommendation\": \"Interview or Reject with reason\",\n  \"summary\": \"short evaluation\"\n}\n\nResume:\n{{ $json.body.resume }}"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        416,
+        -16
+      ],
+      "id": "8d61cef3-d3ed-4cf4-9fad-bcd4992606da",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        352,
+        192
+      ],
+      "id": "75e28cb4-18d0-4103-84e4-3af8a6b60216",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "001MmHzavN5TLszs",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"compatibility_rating\": \"string\",\n  \"ats_score\": \"string\",\n  \"recommendation\": \"string\",\n  \"summary\": \"string\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        160
+      ],
+      "id": "5c2bc7f7-7461-43d3-a1d1-93ef6c655f4e",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "sendTo": "=To: {{$node[\"Webhook\"].json[\"email\"]}}",
+        "subject": "hello",
+        "message": "=<h2>ATS Resume Analysis Report</h2>\n\n<p>Dear {{ $('On form submission').item.json['Full Name'] }},</p>\n\n<p>Thank you for submitting your resume for the <strong>Software Engineer</strong> role at <strong>Atomise AI</strong>.</p>\n\n<hr>\n\n<p><strong>🔹 Compatibility Rating:</strong> {{$json[\"compatibility_rating\"]}}</p>\n\n<p><strong>🔹 ATS Score:</strong> {{$json[\"ats_score\"]}}</p>\n\n<p><strong>🔹 Recommendation:</strong> {{$json[\"recommendation\"]}}</p>\n\n<p><strong>🔹 Summary:</strong><br>\n{{$json[\"summary\"]}}</p>\n\n<hr>\n\n<p>If shortlisted, our team will reach out to you for the next steps.</p>\n\n<p>Best regards,<br>\n<b>Hiring Team</b><br>\nAtomise AI</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        176
+      ],
+      "id": "55d90ec4-c121-41c4-8b46-ed1752138c91",
+      "name": "Send a message",
+      "webhookId": "32512510-78d2-4e76-8b41-f2c2e6f4df53",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "VcjjQgvcYzweVotv",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let text = $json.text || $json.output || JSON.stringify($json);\n\n// Remove markdown\ntext = text.replace(/```json|```/g, '').trim();\n\n// Extract JSON only\nconst start = text.indexOf('{');\nconst end = text.lastIndexOf('}') + 1;\n\nconst jsonString = text.slice(start, end);\n\n// Parse\nconst parsed = JSON.parse(jsonString);\n\nreturn [{ json: parsed }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        -16
+      ],
+      "id": "68b4f366-b5ed-4aba-a064-8c75c49b8a39",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bc98eb5c-d942-42cf-8f18-5c400599e0e1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "acc5e271-6e4c-4290-aa40-8df6f975b776",
+      "name": "Webhook",
+      "webhookId": "bc98eb5c-d942-42cf-8f18-5c400599e0e1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"compatibility_rating\": \"{{$json.compatibility_rating}}\",\n  \"ats_score\": \"{{$json.ats_score}}\",\n  \"recommendation\": \"{{$json.recommendation}}\",\n  \"summary\": \"{{$json.summary}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1136,
+        -32
+      ],
+      "id": "6ce59037-cd73-4e56-a158-beae9ecd568e",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "name: {{$node[\"Webhook\"].json[\"name\"]}}\nemail: {{$node[\"Webhook\"].json[\"email\"]}}\n\ncompatibility_rating: {{$json[\"compatibility_rating\"]}}\nats_score: {{$json[\"ats_score\"]}}\nrecommendation: {{$json[\"recommendation\"]}}\nsummary: {{$json[\"summary\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        -16
+      ],
+      "id": "87e5e8f2-b1a8-4a31-ac8e-6e2b8e9964f5",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        []
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        []
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "96b7616b-5947-4638-8cbe-e4b2cbd57397",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8deb61ef4a41f9756b4aa81dec00f4b23005b1cba126bd4f0e8a1b94bee2c015"
+  },
+  "id": "NE7pvhALrJGF5WDo",
+  "tags": []
+}
