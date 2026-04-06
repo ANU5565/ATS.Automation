@@ -1,0 +1,741 @@
+{
+  "name": "ATS RESUME CHECKER",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1X2EoVRiqD2fAQjC8yyDkDE7hjBh3xxyFEpoo_I8Bd54",
+          "mode": "list",
+          "cachedResultName": "ATS Resume Score ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X2EoVRiqD2fAQjC8yyDkDE7hjBh3xxyFEpoo_I8Bd54/edit?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        352,
+        -64
+      ],
+      "id": "4bfb23c9-1797-4b36-aae7-714af182c3e0",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "BrvvkwlMbivvL6RR",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        160
+      ],
+      "id": "b624ef4d-1acd-452b-8194-d3c3ed0563dc",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "vIpoPGRZP9Cj3XMB",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1LIzwUCWxmCwlPqVFFyg3rivDND5DRyhhZO2uhVpFt_o",
+          "mode": "list",
+          "cachedResultName": "n8n-job search",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LIzwUCWxmCwlPqVFFyg3rivDND5DRyhhZO2uhVpFt_o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LIzwUCWxmCwlPqVFFyg3rivDND5DRyhhZO2uhVpFt_o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "output": "={{ $json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Keyword",
+              "displayName": "Keyword",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Experience Level",
+              "displayName": "Experience Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Job Type",
+              "displayName": "Job Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Remote",
+              "displayName": "Remote",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Easy Apply",
+              "displayName": "Easy Apply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "coverLetter ",
+              "displayName": "coverLetter ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "coverLetter",
+              "displayName": "coverLetter",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "applylink",
+              "displayName": "applylink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        960,
+        -64
+      ],
+      "id": "cca1e223-c784-4719-b172-8f010223db5a",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5CCe2fIWGFk99EZM",
+          "name": "Google Sheets account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Candidate Name: {{ $('Get row(s) in sheet').item.json.Name }}\nFull Resume Evaluation Report:\n\nConvert this into a professional email ready to send.\n\nYou are a professional email writer and designer.\n\nGenerate a short, clean, professional HTML email.\n\nRules:\n- Keep it concise.\n- No long paragraphs.\n- Show only key highlights.\n- Force white background.\n- Clean card layout.\n- Highlight ATS score clearly.\n- End with:\n\nRegards,\nDeepika\n\n- Use inline CSS only.\n- Output only HTML.\n",
+        "options": {
+          "systemMessage": "=You are a professional email writer.\n\nYour task is to convert a resume evaluation report into a clean, well-formatted, professional email ready to be sent to a student.\n\nRules:\n- Start with a personalized greeting using the candidate's name.\n- Keep the tone professional, encouraging, and clear.\n- Present the ATS score clearly near the top.\n- Maintain structured sections with proper spacing.\n- Do NOT use markdown formatting (no ###, no **, no code blocks).\n- Do NOT include analysis explanations.\n- Only output the final email content.\n- End with a soft call-to-action suggesting professional resume optimization support.\n- Keep formatting clean for direct Gmail sending.\n\n\nCandidate Name: {{ $('Get row(s) in sheet').item.json.Name }}\n\nHere is the resume evaluation report:\n\n{{ $json.output }}\n\nGenerate a professional email with:\n\n1. Greeting\n2. Thank you message\n3. Mention overall ATS score clearly\n4. Present report content cleanly\n5. Encouraging closing note\n6. Soft CTA for resume improvement\n\nDo not add extra commentary.\nOnly output the final email.\n\nYou are a professional email designer and writer.\n\nYour task is to convert a resume evaluation report into a clean, structured, professional HTML email that looks official and premium.\n\nDesign Rules:\n- Use simple HTML only (no external CSS).\n- Wrap content inside a centered container with max-width 600px.\n- Use clean spacing and readable fonts.\n- Use <h2> for main title.\n- Use <strong> for section headings.\n- Use <ul> and <li> for bullet points.\n- Highlight Overall ATS Score clearly near the top.\n- Keep the tone professional and encouraging.\n- End with a branded-style closing section.\n- Do NOT use markdown.\n- Output only valid HTML email body content.\n\n\nYou are a professional email designer.\n\nGenerate a clean, premium HTML email with:\n\n- Forced white background\n- Centered card layout (max-width 620px)\n- Professional typography\n- Precise, concise descriptions\n- Clear spacing\n- Attractive but minimal design\n- Light grey section dividers\n- No long paragraphs\n- Short, sharp bullet points\n\nDesign rules:\n- Use inline CSS only\n- Force background-color: #ffffff on outer wrapper\n- Use a subtle border and soft shadow\n- Highlight ATS score inside a colored box\n- Keep content concise and impactful\n- Output only HTML\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1168,
+        -64
+      ],
+      "id": "aefdf448-cff4-47c3-8b03-2a94173cf98c",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get row(s) in sheet').item.json['Email Address'] }}",
+        "subject": "Resume Evaluation Feedback ",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        -64
+      ],
+      "id": "6d518d1a-19cd-497a-b191-31d789c86ad9",
+      "name": "Send a message",
+      "webhookId": "504cbfaa-40e1-4605-b4dd-9b21a153b718",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GNNspLks6F6BkeO6",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1104,
+        176
+      ],
+      "id": "52b5a36f-3ccc-46f7-a6e1-5dc30213572d",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "vIpoPGRZP9Cj3XMB",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JLdHlFfnehAlZ1e5BXJE9_Eik2XLFuFRTUbZjVS9NJA",
+          "mode": "list",
+          "cachedResultName": "Free ATS Resume Score Report (Placement Edition) (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JLdHlFfnehAlZ1e5BXJE9_Eik2XLFuFRTUbZjVS9NJA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 303624446,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JLdHlFfnehAlZ1e5BXJE9_Eik2XLFuFRTUbZjVS9NJA/edit#gid=303624446"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sent mail ?": "Yes"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Id",
+              "displayName": "Email Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Year of passing",
+              "displayName": "Year of passing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "College Name",
+              "displayName": "College Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Are you currently applying for jobs?",
+              "displayName": "Are you currently applying for jobs?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "How many jobs have you applied to in the last 30 days? ",
+              "displayName": "How many jobs have you applied to in the last 30 days? ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "How many interview calls did you receive? ",
+              "displayName": "How many interview calls did you receive? ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "What role are you targeting??   (Example : Software Developer / Data Analyst / Marketing etc.)",
+              "displayName": "What role are you targeting??   (Example : Software Developer / Data Analyst / Marketing etc.)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Upload Your Resume!",
+              "displayName": "Upload Your Resume!",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sent mail ?",
+              "displayName": "sent mail ?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1728,
+        -64
+      ],
+      "id": "ac7935db-d2c4-4596-9acb-942cea1bd510",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5CCe2fIWGFk99EZM",
+          "name": "Google Sheets account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are evaluating a student resume for ATS compatibility and placement readiness.\n\nCANDIDATE DETAILS:\nName: {{Google Sheets → Name}}\nEmail: {{Google Sheets → Email}}\nYear of Passing: {{Google Sheets → Year of Passing}}\nTarget Role: {{Google Sheets → Target Role}}\n\nRESUME CONTENT:\n{{Extract from File → Text}}\n\nJOB DESCRIPTION (if provided):\n{{Google Sheets → Job Description}}\n\nInstructions:\n- Analyze the resume thoroughly.\n- If job description is provided, compare against it.\n- If not provided, evaluate for general entry-level placement readiness.\n- Follow the detailed structured report format defined in system message.\n- Do not skip any section.\n- Provide deep, actionable feedback.\nEnsure the output is formatted cleanly with proper section headings and spacing for direct email delivery.\n",
+        "options": {
+          "systemMessage": "=You are an advanced ATS (Applicant Tracking System) resume evaluation and placement analysis engine.\n\nYour objective:\nDeliver a detailed, high-value, professional resume audit report that feels like a paid career consultation.\n\nTasks:\n1. Compare the candidate resume with the provided job description (if available).\n2. If no job description is provided, evaluate for general placement readiness.\n3. Analyze keyword optimization, skill alignment, project relevance, measurable impact, formatting, clarity, and recruiter psychology.\n4. Provide deep, actionable, specific feedback.\n\nScoring Framework (Total 100 Points):\n\n1. Keyword Optimization (25 points)\n2. Skills Alignment (20 points)\n3. Project & Experience Relevance (20 points)\n4. Achievement & Impact Strength (15 points)\n5. ATS Formatting & Structure (10 points)\n6. Clarity & Professional Presentation (10 points)\n\nSTRICT OUTPUT FORMAT (Well-Structured Professional Report):\n\nSECTION 1: Overall ATS Score\n- Overall Score: X/100\n- Performance Level: Below Average / Average / Competitive / Strong\n\nSECTION 2: Score Breakdown\n- Keyword Optimization: X/25\n- Skills Alignment: X/20\n- Project & Experience Relevance: X/20\n- Achievement Impact: X/15\n- Formatting & ATS Compatibility: X/10\n- Clarity & Presentation: X/10\n\nSECTION 3: Strength Analysis\n(List 4-6 strong points from the resume with explanation)\n\nSECTION 4: Critical Improvement Areas\n(List 5-8 detailed weaknesses with explanation of why they hurt interview chances)\n\nSECTION 5: Missing or Weak Keywords\n(List important missing keywords based on job description or general industry expectations)\n\nSECTION 6: Resume Bullet Rewrite Suggestions\nRewrite 3-5 weak bullet points into strong, quantified, ATS-optimized statements.\n\nSECTION 7: Placement Probability Insight\nProvide a realistic assessment:\n- Estimated Interview Shortlisting Potential (Low / Moderate / High)\n- Why?\n- What must be fixed to reach next level?\n\nIMPORTANT:\n- Be specific.\n- Avoid generic advice.\n- Give actionable improvements.\n- Write in a professional but motivating tone.\n-Give the score always in numbers , not words\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        608,
+        -64
+      ],
+      "id": "9118611a-c047-4a5e-86d3-fa6a53a39bdb",
+      "name": "ATSSCORE"
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -64
+      ],
+      "id": "211b3328-1cfa-4184-9bdf-dda423a3c70a",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2adfdc60-f7f3-4349-a7ff-3bbf0ed0da68",
+              "leftValue": "={{ $json['sent mail ?'] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1936,
+        -64
+      ],
+      "id": "7e9b0d69-116a-4aa5-9ac7-efb8c83b27bc",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1X2EoVRiqD2fAQjC8yyDkDE7hjBh3xxyFEpoo_I8Bd54",
+          "mode": "list",
+          "cachedResultName": "ATS Resume Score ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X2EoVRiqD2fAQjC8yyDkDE7hjBh3xxyFEpoo_I8Bd54/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 271304746,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X2EoVRiqD2fAQjC8yyDkDE7hjBh3xxyFEpoo_I8Bd54/edit#gid=271304746"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -192,
+        -64
+      ],
+      "id": "a3a9448e-a85b-4bbc-b116-136265d87bb7",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5CCe2fIWGFk99EZM",
+          "name": "Google Sheets account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -416,
+        -64
+      ],
+      "id": "baf32c43-69b1-4c70-8e5f-614cf26310e7",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "ATSSCORE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "ATSSCORE",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ATSSCORE": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "aa3d48c5-ebab-4a67-b221-926e6d37fdfb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f5aff30089cafe6a5f866d83c6e9a256988334527f42206262821214754b85a4"
+  },
+  "id": "HBCIM1upnZXLmMvf",
+  "tags": []
+}
