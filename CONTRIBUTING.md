@@ -1,4 +1,4 @@
-# Contributing to HirePilot
+# Contributing to ATS
 
 Thanks for your interest in contributing! 🚀
 
