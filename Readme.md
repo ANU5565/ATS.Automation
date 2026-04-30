@@ -35,7 +35,7 @@ An automated Applicant Tracking System (ATS) built using n8n and AI to analyze r
 
 ---
 
-## 📷 Sample Output
+## Sample Output
 
 ```json
 {
