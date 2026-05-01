@@ -19,7 +19,7 @@ An automated Applicant Tracking System (ATS) built using n8n and AI to analyze r
 ## 🛠️ Tech Stack
 
 - n8n (Workflow Automation)  
-- OpenAI / LLM (Resume Analysis)  
+- Gemini / LLM (Resume Analysis)  
 - Gmail API (Email Sending)  
 - HTML (Email Formatting)  
 
