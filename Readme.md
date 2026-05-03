@@ -1,7 +1,7 @@
 
 # 🚀 AI-Powered ATS Workflow (n8n)
 
-An automated Applicant Tracking System (ATS) built using n8n and AI to analyze resumes, generate scores, and send structured evaluation emails to candidates.
+An automated Applicant Tracking System (ATS) built using n8n and AI to analyze resumes, generate scores, and send structured evaluation emails to candidates
 
 ---
 
